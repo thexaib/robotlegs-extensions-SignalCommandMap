@@ -8,14 +8,14 @@
 package robotlegs.bender.extensions.signalCommandMap.impl
 {
 	import org.osflash.signals.ISignal;
-
-	import robotlegs.bender.framework.api.IInjector;
+	
+	import robotlegs.bender.extensions.commandCenter.api.CommandPayload;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
-	import robotlegs.bender.extensions.commandCenter.api.CommandPayload;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.ILogger;
 
 	/**
@@ -29,6 +29,7 @@ package robotlegs.bender.extensions.signalCommandMap.impl
 		/*============================================================================*/
 
 		private var _signalClass:Class;
+		private var _signalGroup:String;
 
 		private var _signal:ISignal;
 
@@ -49,11 +50,14 @@ package robotlegs.bender.extensions.signalCommandMap.impl
 			injector:IInjector,
 			signalClass:Class,
 			processors:Array = null,
-			logger:ILogger = null)
+			logger:ILogger = null,
+			signalGroup:String=""
+		)
 		{
 			_injector = injector;
 
 			_signalClass = signalClass;
+			_signalGroup=signalGroup;
 			_mappings = new CommandMappingList(this, processors, logger);
 			_executor = new CommandExecutor(injector, _mappings.removeMapping);
 		}
@@ -75,9 +79,9 @@ package robotlegs.bender.extensions.signalCommandMap.impl
 		 */
 		public function activate():void
 		{
-			if (!_injector.hasMapping(_signalClass))
-				_injector.map(_signalClass).asSingleton();
-			_signal = _injector.getInstance(_signalClass);
+			if (!_injector.hasMapping(_signalClass,_signalGroup))
+				_injector.map(_signalClass,_signalGroup).asSingleton();
+			_signal = _injector.getInstance(_signalClass,_signalGroup);
 			_signal.add(routePayloadToCommands);
 		}
 

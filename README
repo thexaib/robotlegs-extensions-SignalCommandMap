@@ -1,3 +1,6 @@
+Working with Signal StateMachine RL2.2.1 extension  by David Whittingham this patch:
+https://github.com/thexaib/robotlegs-extensions-SignalStateMachine/tree/patch-1
+-----
 I have forked this library to the official robotlegs organisation page.
 Please post any about any known issues/bugs there.
 https://github.com/robotlegs/robotlegs-extensions-SignalCommandMap
